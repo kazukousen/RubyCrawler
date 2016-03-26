@@ -12,8 +12,8 @@ class Site
     @page_source ||= open(url, opt)
   end
 
-  def output(formatter_klass, part)
-    formatter_klass.new(self).format(parse, part)
+  def output(formatter_klass)
+    formatter_klass.new(self).format(parse)
   end
 end
 
@@ -33,21 +33,12 @@ class Formatter
 end
 
 class SubjectLinkFormat < Formatter
-  module Pagination
-    First = (0..9)
-    Last = (10..19)
-  end
 
-  def format(nodesets, part)
-    page = case part
-    when 0
-      Pagination::First
-    when 1
-      Pagination::Last
-    end
+  def format(nodesets)
 
-    subjects = page.map{|i| nodesets[i].text}
-    links =  page.map{|i| nodesets[i].[]('href')}
+    nodetimes = (0..19)
+    subjects = nodetimes.map{|i| nodesets[i].text}
+    links =  nodetimes.map{|i| nodesets[i].[]('href')}
 
     list = {}
     list = subjects.zip(links).map do |subject, link|
@@ -64,4 +55,4 @@ opt = {}
 opt['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36 Vivaldi/1.0.403.24'
 
 site = HatenaBookmark.new(url:url, opt:opt)
-puts site.output(SubjectLinkFormat, ARGV.first.to_i)
+puts site.output(SubjectLinkFormat)
