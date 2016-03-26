@@ -64,4 +64,4 @@ opt = {}
 opt['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.109 Safari/537.36 Vivaldi/1.0.403.24'
 
 site = HatenaBookmark.new(url:url, opt:opt)
-puts site.output(SubjectLinkFormat, 0)
+puts site.output(SubjectLinkFormat, ARGV.first.to_i)
